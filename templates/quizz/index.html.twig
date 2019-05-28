@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Quizz Test ! {% endblock %}
+
+{% block body %}
+    <link rel="stylesheet" href="{{ asset('css/jquery_steps/jquery.steps.css')}}">
+<br><br>
+
+    <div id="example-basic">
+        {% for question in questions %}
+            <h3></h3>
+            <section>
+                <h2 class="text-center">{{ question.question }}</h2>
+                {% for theChoice in question.choices %}
+                    <div class="custom-control custom-radio">
+                        <input type="radio"
+                               href="#next"
+                               role="menuitem"
+                               id="customRadio{{ theChoice.id }}"
+                               onclick="javascript:selectChoice({{ question.id }},{{ theChoice.id }});"
+                               name="customRadio"
+                               data-choice="{{ theChoice.id }}"
+                               class="custom-control-input">
+                        <label class="custom-control-label" for="customRadio{{ theChoice.id }}">{{ theChoice.choice }}</label>
+                    </div>
+                {% endfor %}
+            </section>
+        {% endfor %}
+    </div>
+
+    <div>
+        <form action="{{ path('add_new_answers') }}" method="post">
+            <input type="hidden" value="{{ user.id }}" name="user_id" id="user_id">
+             {% for question in questions %}
+                <input type="hidden" value="0" name="response_{{ question.id }}" id="response_{{ question.id }}" required>
+            {% endfor %}
+
+             <button class="btn btn-primary" type="submit" value="go">
+               Finish
+             </button>
+        </form>
+    </div>
+{% endblock %}
+
+ {% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/quizz_show.js') }}"></script>
+{% endblock %}

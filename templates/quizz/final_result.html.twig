@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Quizz Test ! {% endblock %}
+
+{% block body %}
+
+<h1>Hello {{ user.firstName }} {{ user.lastName }},</h1><br>
+{% if results.ko == 0 %}
+    <div class="jumbotron">
+        <h1 class="display-3">Congratulations!</h1>
+        <p class="lead">You successfully completed the test.</p>
+        <hr class="my-4">
+        <p>So pleased to see you accomplishing great things.</p>
+
+    </div>
+{% else %}
+    <div class="jumbotron">
+        <h1 class="display-3">Failed :(</h1>
+        <p class="lead">You did not pass the test</p>
+        <hr class="my-4">
+        <p>Everyone fails. It happens to everyone at some point, and you can get through it!</p>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#score">
+            Score
+        </button>
+    </div>
+
+{% endif %}
+    <div class="modal fade" id="score" tabindex="-1" role="dialog" aria-labelledby="scoreLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="scoreLabel">Score</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span class="badge badge-success">Good answers :</span> {{ results.ok }} / {{ results.total }}<br>
+                    <span class="badge badge-primary">False answers :</span> {{ results.ko }} / {{ results.total }}<br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+ {% block javascripts %}
+     {{ parent() }}
+ {% endblock %}

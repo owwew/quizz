@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {{ form_start(formQuestion, {attr: {class: 'form-signin'} }) }}
+        <div class="form-label-group">
+            {{ form_row(formQuestion.question, {'attr': {'placeholder':"First name"}  } ) }}
+        </div>
+        <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Ajouter Question</button>
+    {{ form_end(formQuestion) }}
+{% endblock %}
