@@ -20,9 +20,6 @@ use App\Entity\Answers;
 
 class QuizzController extends Controller
 {
-
-
-
     /**
      * @Route("/", name="home")
      */
@@ -46,7 +43,6 @@ class QuizzController extends Controller
             ]);
     }
 
-
     /**
      * @Route("/quizz/{id}", name="quizz")
      */
@@ -61,7 +57,6 @@ class QuizzController extends Controller
             'user'=>$user,
         ]);
     }
-
 
     /**
      * @Route("/add_new_uestion", name="add_new_question")
@@ -94,11 +89,8 @@ class QuizzController extends Controller
         $choice -> setChoice($choice3);
         $choice -> setValidity(false);
         $manager->persist($choice);
-
         $manager->flush();
-
         return $this->redirectToRoute('all_questions');
-
     }
 
     /**
@@ -123,43 +115,22 @@ class QuizzController extends Controller
         $request = $this->get('request_stack')->getCurrentRequest();
         dump($user);
         foreach($questions as $question){
-            //dump($question->getId());   //load question by ID
-            //dump($request->get('response_'.$question->getId())); // load response by ID
-
-
             $answer = new Answers();
             $answer -> setChoice($request->get('response_'.$question->getId()));
             $answer -> setUser($user);
             $chosenResponse = $request->get('response_'.$question->getId());
-
             $choice = $choicesRepository->find($chosenResponse);
-
-
-            //dump($choice);
-
-
             $answer -> setResult($choice->getValidity());
             $manager->persist($answer);
-
-            //dump($toto);
-            /*$answer -> setChoice($toto);
-            //$answer -> setChoice($request->get('response_'.$question->getId()));
-            $answer -> setUser($user);
-            $answer -> setResult(true);
-
-            $manager->persist($answer);*/
-
         }
         $manager->flush();
-        //$manager->flush();
-
         return $this->redirectToRoute('final_result', ['id'=> $user->getId()]);
-        //return new Response('toto');
     }
-        /**
-         * @Route("/Result/{id}", name="final_result")
-         */
-        public function finalResult($id,UsersRepository $usersRepository, QuestionsRepository $questionsRepository, AnswersRepository $answersRepository)
+
+    /**
+     * @Route("/Result/{id}", name="final_result")
+     */
+    public function finalResult($id,UsersRepository $usersRepository, QuestionsRepository $questionsRepository, AnswersRepository $answersRepository)
     {
         $results = array(
             "ok"=>0,
@@ -167,9 +138,7 @@ class QuizzController extends Controller
             "total"=>0
         );
         $user = $usersRepository->find($id);
-        //$choiceUser = $answersRepository->findBy(array("user_id"=>$user));
         $choicesUser = $answersRepository->findByUser($user);
-        //dump($choiceUser);
         foreach($choicesUser as $choice){
             if($choice->getResult() == true){
                 $results["ok"]++;
@@ -183,7 +152,6 @@ class QuizzController extends Controller
             'results'=>$results,
         ]);
     }
-
 
     /**
      * @Route("/delete/{question_id}", name="delete")
@@ -200,9 +168,4 @@ class QuizzController extends Controller
 
         return $this->redirectToRoute('all_questions');
     }
-
-//$userId not $id
-//request manager a degager
-// dans construtror
-
 }
